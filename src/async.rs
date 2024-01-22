@@ -12,9 +12,10 @@
 //! Esplora by way of `reqwest` HTTP client.
 
 use std::collections::HashMap;
+use std::io::Cursor;
 use std::str::FromStr;
 
-use bpstd::{BlockHash, ScriptPubkey, Txid};
+use bpstd::{BlockHash, ConsensusDecode, ScriptPubkey, Tx, Txid};
 
 #[allow(unused_imports)]
 use log::{debug, error, info, trace};
@@ -22,7 +23,7 @@ use log::{debug, error, info, trace};
 use reqwest::{Client, StatusCode};
 use sha2::{Digest, Sha256};
 
-use crate::{BlockStatus, BlockSummary, Builder, Error, OutputStatus, Tx, TxStatus};
+use crate::{BlockStatus, BlockSummary, Builder, Error, OutputStatus, TxStatus};
 
 #[derive(Debug, Clone)]
 pub struct AsyncClient {
@@ -53,9 +54,8 @@ impl AsyncClient {
         AsyncClient { url, client }
     }
 
-    /* Uncomment once `bp-primitives` will support consensus serialziation
     /// Get a [`Transaction`] option given its [`Txid`]
-    pub async fn tx(&self, txid: &Txid) -> Result<Option<Transaction>, Error> {
+    pub async fn tx(&self, txid: &Txid) -> Result<Option<Tx>, Error> {
         let resp = self
             .client
             .get(&format!("{}/tx/{}/raw", self.url, txid))
@@ -66,18 +66,20 @@ impl AsyncClient {
             return Ok(None);
         }
 
-        Ok(Some(deserialize(&resp.error_for_status()?.bytes().await?)?))
+        let bytes = resp.error_for_status()?.bytes().await?;
+        let tx =
+            Tx::consensus_decode(&mut Cursor::new(bytes)).map_err(|_| Error::InvalidServerData)?;
+        Ok(Some(tx))
     }
 
     /// Get a [`Transaction`] given its [`Txid`].
-    pub async fn tx_no_opt(&self, txid: &Txid) -> Result<Transaction, Error> {
+    pub async fn tx_no_opt(&self, txid: &Txid) -> Result<Tx, Error> {
         match self.tx(txid).await {
             Ok(Some(tx)) => Ok(tx),
             Ok(None) => Err(Error::TransactionNotFound(*txid)),
             Err(e) => Err(e),
         }
     }
-     */
 
     /// Get a [`Txid`] of a transaction given its index in a block with a given hash.
     pub async fn txid_at_block_index(
