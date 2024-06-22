@@ -219,15 +219,17 @@ impl AsyncClient {
     }
 
     pub async fn broadcast(&self, tx: &Tx) -> Result<(), Error> {
-        self
+        let resp = self
             .client
             .post(&format!("{}/tx", self.url))
             .body(format!("{tx:x}").to_string())
             .send()
-            .await?
-            ;
+            .await?;
 
-        Ok(())
+        match resp.error_for_status() {
+            Ok(_) => Ok(()),
+            Err(err) => Err(Error::Reqwest(err))
+        }
     }
 
 
