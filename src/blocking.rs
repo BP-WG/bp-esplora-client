@@ -335,7 +335,7 @@ impl BlockingClient {
                 "{}/scripthash/{:x}/txs/chain/{}",
                 self.url, script_hash, last_seen
             ),
-            None => format!("{}/scripthash/{:x}/txs", self.url, script_hash),
+            None => format!("{}/scripthash/{:x}/txs/chain", self.url, script_hash),
         };
         Ok(self.agent.get(&url).call()?.into_json()?)
     }
