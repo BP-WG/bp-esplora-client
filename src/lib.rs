@@ -77,7 +77,7 @@ use std::num::TryFromIntError;
 use std::time::Duration;
 
 use amplify::hex;
-use bpstd::Txid;
+use bp::Txid;
 
 #[cfg(feature = "async")]
 pub use r#async::Sleeper;

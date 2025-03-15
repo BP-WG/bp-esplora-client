@@ -23,7 +23,8 @@ use sha2::{Digest, Sha256};
 use minreq::{Proxy, Request, Response};
 
 use amplify::hex::FromHex;
-use bpstd::{Address, BlockHash, BlockHeader, ConsensusDecode, ScriptPubkey, Tx, Txid};
+use bp::{BlockHash, BlockHeader, ConsensusDecode, ScriptPubkey, Tx, Txid};
+use invoice::Address;
 
 use crate::{
     AddressStats, BlockStatus, BlockSummary, Builder, Config, Error, MerkleProof, OutputStatus,

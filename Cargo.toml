@@ -19,7 +19,8 @@ path = "src/lib.rs"
 [dependencies]
 amplify = { version = "4.7.0", features = ["serde"] }
 sha2 = "0.10.8"
-bp-std = { version = "0.11.1-alpha.1", features = ["serde"] }
+bp-core = { version = "0.11.1-alpha.1", features = ["serde"] }
+bp-invoice = "0.11.1-alpha.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_with = { version = "3.11", features = ["hex"] }
 log = "^0.4"

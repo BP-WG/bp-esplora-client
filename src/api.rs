@@ -5,7 +5,7 @@
 use amplify::confinement::Confined;
 use amplify::hex::FromHex;
 use amplify::{confinement, Bytes32};
-use bpstd::{
+use bp::{
     BlockHash, LockTime, Outpoint, ScriptPubkey, SeqNo, SigScript, Tx as Transaction, TxIn, TxOut,
     TxVer, Txid, Witness,
 };

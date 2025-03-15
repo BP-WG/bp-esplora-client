@@ -15,9 +15,8 @@ use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
-use bpstd::{
-    Address, BlockHash, BlockHeader, ConsensusDecode, ConsensusEncode, ScriptPubkey, Tx, Txid,
-};
+use bp::{BlockHash, BlockHeader, ConsensusDecode, ConsensusEncode, ScriptPubkey, Tx, Txid};
+use invoice::Address;
 
 #[allow(unused_imports)]
 use log::{debug, error, info, trace};
